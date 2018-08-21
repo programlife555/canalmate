@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppdai.canalmate.api.dao.canal.server.DestinationsConfigMapper">
+  <resultMap id="BaseResultMap" type="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="canal_id" jdbcType="BIGINT" property="canalId" />
+    <result column="destination_name" jdbcType="VARCHAR" property="destinationName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="destination_configuration" jdbcType="VARCHAR" property="destinationConfiguration" />
+    <result column="standby_configuration" jdbcType="VARCHAR" property="standbyConfiguration" />
+    <result column="inserttime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isactive" jdbcType="BIT" property="isactive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, canal_id, destination_name, description, destination_configuration, standby_configuration, 
+    inserttime, updatetime, isactive
+  </sql>
+  <update id="updateDestinationByDestinationName" parameterType="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    update destinations_config
+    set destination_name = #{destinationName,jdbcType=VARCHAR},
+    description = #{description,jdbcType=VARCHAR},
+    destination_configuration = #{destinationConfiguration,jdbcType=VARCHAR},
+    standby_configuration = #{standbyConfiguration,jdbcType=VARCHAR}
+    where destination_name = #{destinationNameUpdateKey,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from destinations_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectDestinationOldConfigByDestinationName" parameterType="java.lang.String" resultType="java.util.Map">
+    select destination_name
+    ,description
+    ,destination_configuration
+    ,standby_configuration
+    from destinations_config
+    where destination_name=#{destinationName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectDestinationDeployInfo" parameterType="java.lang.String" resultType="java.util.Map">
+    select csc.canal_home as canalHome
+    ,csc.canal_server_host as canalServerHost
+    ,csc.standby_server_host as standbyServerHost
+    ,dc.destination_configuration as destinationConfiguration
+    ,dc.standby_configuration as standbyConfiguration
+    from canal_server_config csc
+    left join destinations_config dc on dc.canal_id=csc.id
+    where dc.destination_name=#{destinationName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCanalId" parameterType="java.lang.String" resultType="java.lang.Long">
+    select id from canal_server_config
+    where canal_server_name=#{canalServerName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from destinations_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteDestinationByDestinationName" parameterType="java.lang.String">
+    delete dc,cc from destinations_config dc
+    left join client_config cc on cc.destination_id=dc.id
+    where dc.`destination_name`=#{destinationName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    insert into destinations_config (canal_id, destination_name,
+      description, destination_configuration, 
+      standby_configuration, inserttime, updatetime, 
+      isactive)
+    values (#{canalId,jdbcType=BIGINT}, #{destinationName,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR}, #{destinationConfiguration,jdbcType=VARCHAR}, 
+      #{standbyConfiguration,jdbcType=VARCHAR}, now(), now(),
+      1)
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    insert into destinations_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="canalId != null">
+        canal_id,
+      </if>
+      <if test="destinationName != null">
+        destination_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="destinationConfiguration != null">
+        destination_configuration,
+      </if>
+      <if test="standbyConfiguration != null">
+        standby_configuration,
+      </if>
+      <if test="inserttime != null">
+        inserttime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isactive != null">
+        isactive,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="canalId != null">
+        #{canalId,jdbcType=BIGINT},
+      </if>
+      <if test="destinationName != null">
+        #{destinationName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="destinationConfiguration != null">
+        #{destinationConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyConfiguration != null">
+        #{standbyConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    update destinations_config
+    <set>
+      <if test="canalId != null">
+        canal_id = #{canalId,jdbcType=BIGINT},
+      </if>
+      <if test="destinationName != null">
+        destination_name = #{destinationName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="destinationConfiguration != null">
+        destination_configuration = #{destinationConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyConfiguration != null">
+        standby_configuration = #{standbyConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        isactive = #{isactive,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppdai.canalmate.api.model.canal.server.DestinationsConfig">
+    update destinations_config
+    set canal_id = #{canalId,jdbcType=BIGINT},
+      destination_name = #{destinationName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      destination_configuration = #{destinationConfiguration,jdbcType=VARCHAR},
+      standby_configuration = #{standbyConfiguration,jdbcType=VARCHAR},
+      inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isactive = #{isactive,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

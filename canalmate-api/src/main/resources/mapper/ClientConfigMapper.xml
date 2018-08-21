@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppdai.canalmate.api.dao.canal.server.ClientConfigMapper">
+  <resultMap id="BaseResultMap" type="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="destination_id" jdbcType="BIGINT" property="destinationId" />
+    <result column="client_name" jdbcType="VARCHAR" property="clientName" />
+    <result column="zk_servers" jdbcType="VARCHAR" property="zkServers" />
+    <result column="filter" jdbcType="VARCHAR" property="filter" />
+    <result column="inserttime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isactive" jdbcType="BIT" property="isactive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, destination_id, client_name, zk_servers, filter, inserttime, updatetime, isactive
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from client_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateByClientName" parameterType="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    update client_config
+    set path = #{path,jdbcType=VARCHAR},
+    host = #{host,jdbcType=VARCHAR},
+    client_name = #{clientName,jdbcType=VARCHAR},
+    zk_servers = #{zkServers,jdbcType=VARCHAR},
+    filter = #{filter,jdbcType=VARCHAR}
+    where client_name = #{clientNameUpdateKey,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from client_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <select id="selectClientOldConfig" parameterType="java.lang.String" resultType="java.util.Map">
+    select path,host,client_name,zk_servers,filter
+    from client_config
+    where client_name=#{clientName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectClientConfig" parameterType="java.lang.String" resultType="java.util.Map">
+    select dc.destination_name as destinationName ,cc.host,cc.path
+    from destinations_config dc
+    left join client_config cc on cc.destination_id=dc.id
+    where cc.client_name=#{clientName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByClientName" parameterType="java.lang.String">
+    delete from client_config
+    where client_name = #{clientName,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectDestinationId" parameterType="java.lang.String" resultType="java.lang.Long">
+    select id from destinations_config where destination_name=#{destinationName,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    insert into client_config (destination_id, path, host, client_name,
+      zk_servers, filter, inserttime, 
+      updatetime, isactive)
+    values (#{destinationId,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR},#{host,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR},
+      #{zkServers,jdbcType=VARCHAR}, #{filter,jdbcType=VARCHAR}, now(),
+      now(), 1)
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    insert into client_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="destinationId != null">
+        destination_id,
+      </if>
+      <if test="clientName != null">
+        client_name,
+      </if>
+      <if test="zkServers != null">
+        zk_servers,
+      </if>
+      <if test="filter != null">
+        filter,
+      </if>
+      <if test="inserttime != null">
+        inserttime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isactive != null">
+        isactive,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="destinationId != null">
+        #{destinationId,jdbcType=BIGINT},
+      </if>
+      <if test="clientName != null">
+        #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="zkServers != null">
+        #{zkServers,jdbcType=VARCHAR},
+      </if>
+      <if test="filter != null">
+        #{filter,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    update client_config
+    <set>
+      <if test="destinationId != null">
+        destination_id = #{destinationId,jdbcType=BIGINT},
+      </if>
+      <if test="clientName != null">
+        client_name = #{clientName,jdbcType=VARCHAR},
+      </if>
+      <if test="zkServers != null">
+        zk_servers = #{zkServers,jdbcType=VARCHAR},
+      </if>
+      <if test="filter != null">
+        filter = #{filter,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        isactive = #{isactive,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppdai.canalmate.api.model.canal.server.ClientConfig">
+    update client_config
+    set destination_id = #{destinationId,jdbcType=BIGINT},
+      client_name = #{clientName,jdbcType=VARCHAR},
+      zk_servers = #{zkServers,jdbcType=VARCHAR},
+      filter = #{filter,jdbcType=VARCHAR},
+      inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isactive = #{isactive,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

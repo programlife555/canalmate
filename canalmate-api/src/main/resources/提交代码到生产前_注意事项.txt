@@ -1,0 +1,4 @@
+1: 修改 application.properties，spring.profiles.active 改为生产配置
+
+spring.profiles.active=@profileActive@  ###打开这行注释
+#spring.profiles.active=test   ##注释掉这行

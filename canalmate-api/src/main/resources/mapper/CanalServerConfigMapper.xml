@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppdai.canalmate.api.dao.canal.server.CanalServerConfigMapper">
+  <resultMap id="BaseResultMap" type="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="canal_server_type" jdbcType="VARCHAR" property="canalServerType" />
+    <result column="canal_home" jdbcType="VARCHAR" property="canalHome" />
+    <result column="canal_server_name" jdbcType="VARCHAR" property="canalServerName" />
+    <result column="canal_server_host" jdbcType="VARCHAR" property="canalServerHost" />
+    <result column="canal_server_port" jdbcType="VARCHAR" property="canalServerPort" />
+    <result column="canal_server_configuration" jdbcType="VARCHAR" property="canalServerConfiguration" />
+    <result column="standby_server_host" jdbcType="VARCHAR" property="standbyServerHost" />
+    <result column="standby_server_port" jdbcType="VARCHAR" property="standbyServerPort" />
+    <result column="standby_server_configuration" jdbcType="VARCHAR" property="standbyServerConfiguration" />
+    <result column="inserttime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isactive" jdbcType="BIT" property="isactive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, canal_server_type, canal_home, canal_server_name, canal_server_host, canal_server_port, 
+    canal_server_configuration, standby_server_host, standby_server_port, standby_server_configuration, 
+    inserttime, updatetime, isactive
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from canal_server_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteCanalServerByCanalServerName" parameterType="java.lang.String">
+    delete csc,dc,cc from canal_server_config csc
+    left join destinations_config dc on dc.canal_id=csc.id
+    left join client_config cc on cc.destination_id=dc.id
+    where csc.`canal_server_name`=#{canalServerName,jdbcType=VARCHAR}
+  </delete>
+  <update id="updateCanalServerByCanalServerName" parameterType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    update canal_server_config
+    set canal_home = #{canalHome,jdbcType=VARCHAR},
+    canal_server_name = #{canalServerName,jdbcType=VARCHAR},
+    canal_server_host = #{canalServerHost,jdbcType=VARCHAR},
+    canal_server_port = #{canalServerPort,jdbcType=VARCHAR},
+    canal_server_configuration = #{canalServerConfiguration,jdbcType=VARCHAR},
+    standby_server_host = #{standbyServerHost,jdbcType=VARCHAR},
+    standby_server_port = #{standbyServerPort,jdbcType=VARCHAR},
+    standby_server_configuration = #{standbyServerConfiguration,jdbcType=VARCHAR},
+    updatetime = now()
+    where `canal_server_name`=#{serverName,jdbcType=VARCHAR}
+  </update>
+  <select id="selectCanalServerId" resultType="java.lang.String">
+    select id from canal_server_config
+  </select>
+  <select id="selectDeployInfo" parameterType="java.lang.String" resultType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    select canal_home as canalHome
+    ,canal_server_host as canalServerHost,canal_server_configuration as canalServerConfiguration
+    ,standby_server_host as standbyServerHost,standby_server_configuration as standbyServerConfiguration
+    from canal_server_config
+    where canal_server_name=#{canalServerName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCanalServerOldConfigByCanalServerName" parameterType="java.lang.String" resultType="java.util.Map">
+    select canal_home
+    ,canal_server_name
+    ,canal_server_host
+    ,canal_server_port
+    ,canal_server_configuration
+    ,standby_server_host
+    ,standby_server_port
+    ,standby_server_configuration
+    from canal_server_config where canal_server_name=#{canalServerName,jdbcType=VARCHAR}
+  </select>
+  <select id="returnMenuJson" parameterType="java.lang.String" resultType="java.util.Map">
+    select t.id,t.text,t.path,t.parentId from (
+    select 10000+id as id,canal_server_name text,CONCAT('/path/',10000+id) path,'' parentId from canal_server_config where id=#{canalServerId,jdbcType=VARCHAR}
+    union all
+    select 20000+id as id,destination_name text,CONCAT('/path/',20000+id) path,10000+canal_id parentId from destinations_config where canal_id=#{canalServerId,jdbcType=VARCHAR}
+    union all
+    select 30000+cc.id as id ,cc.client_name text,CONCAT('/path/',30000+cc.id) path,20000+cc.destination_id parentId from client_config cc
+    inner join destinations_config dc on dc.id=cc.destination_id
+    WHERE dc.canal_id=#{canalServerId,jdbcType=VARCHAR}
+    ) t
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from canal_server_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    insert into canal_server_config (canal_server_type, canal_home,
+      canal_server_name, canal_server_host, canal_server_port, 
+      canal_server_configuration, standby_server_host, 
+      standby_server_port, standby_server_configuration, 
+      inserttime, updatetime, isactive
+      )
+    values (#{canalServerType,jdbcType=VARCHAR}, #{canalHome,jdbcType=VARCHAR},
+      #{canalServerName,jdbcType=VARCHAR}, #{canalServerHost,jdbcType=VARCHAR}, #{canalServerPort,jdbcType=VARCHAR}, 
+      #{canalServerConfiguration,jdbcType=VARCHAR}, #{standbyServerHost,jdbcType=VARCHAR}, 
+      #{standbyServerPort,jdbcType=VARCHAR}, #{standbyServerConfiguration,jdbcType=VARCHAR}, 
+      now(), now(), 1
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    insert into canal_server_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="canalServerType != null">
+        canal_server_type,
+      </if>
+      <if test="canalHome != null">
+        canal_home,
+      </if>
+      <if test="canalServerName != null">
+        canal_server_name,
+      </if>
+      <if test="canalServerHost != null">
+        canal_server_host,
+      </if>
+      <if test="canalServerPort != null">
+        canal_server_port,
+      </if>
+      <if test="canalServerConfiguration != null">
+        canal_server_configuration,
+      </if>
+      <if test="standbyServerHost != null">
+        standby_server_host,
+      </if>
+      <if test="standbyServerPort != null">
+        standby_server_port,
+      </if>
+      <if test="standbyServerConfiguration != null">
+        standby_server_configuration,
+      </if>
+      <if test="inserttime != null">
+        inserttime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isactive != null">
+        isactive,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="canalServerType != null">
+        #{canalServerType,jdbcType=VARCHAR},
+      </if>
+      <if test="canalHome != null">
+        #{canalHome,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerName != null">
+        #{canalServerName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerHost != null">
+        #{canalServerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerPort != null">
+        #{canalServerPort,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerConfiguration != null">
+        #{canalServerConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerHost != null">
+        #{standbyServerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerPort != null">
+        #{standbyServerPort,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerConfiguration != null">
+        #{standbyServerConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    update canal_server_config
+    <set>
+      <if test="canalServerType != null">
+        canal_server_type = #{canalServerType,jdbcType=VARCHAR},
+      </if>
+      <if test="canalHome != null">
+        canal_home = #{canalHome,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerName != null">
+        canal_server_name = #{canalServerName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerHost != null">
+        canal_server_host = #{canalServerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerPort != null">
+        canal_server_port = #{canalServerPort,jdbcType=VARCHAR},
+      </if>
+      <if test="canalServerConfiguration != null">
+        canal_server_configuration = #{canalServerConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerHost != null">
+        standby_server_host = #{standbyServerHost,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerPort != null">
+        standby_server_port = #{standbyServerPort,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyServerConfiguration != null">
+        standby_server_configuration = #{standbyServerConfiguration,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        isactive = #{isactive,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppdai.canalmate.api.model.canal.server.CanalServerConfig">
+    update canal_server_config
+    set canal_server_type = #{canalServerType,jdbcType=VARCHAR},
+      canal_home = #{canalHome,jdbcType=VARCHAR},
+      canal_server_name = #{canalServerName,jdbcType=VARCHAR},
+      canal_server_host = #{canalServerHost,jdbcType=VARCHAR},
+      canal_server_port = #{canalServerPort,jdbcType=VARCHAR},
+      canal_server_configuration = #{canalServerConfiguration,jdbcType=VARCHAR},
+      standby_server_host = #{standbyServerHost,jdbcType=VARCHAR},
+      standby_server_port = #{standbyServerPort,jdbcType=VARCHAR},
+      standby_server_configuration = #{standbyServerConfiguration,jdbcType=VARCHAR},
+      inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isactive = #{isactive,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

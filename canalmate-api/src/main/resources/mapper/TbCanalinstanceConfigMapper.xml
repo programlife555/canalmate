@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppdai.canalmate.api.dao.canal.server.TbCanalinstanceConfigMapper">
+  <resultMap id="BaseResultMap" type="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="instance_name" jdbcType="VARCHAR" property="instanceName" />
+    <result column="mysql_slaveId" jdbcType="VARCHAR" property="mysqlSlaveid" />
+    <result column="master_address" jdbcType="VARCHAR" property="masterAddress" />
+    <result column="master_journal_name" jdbcType="VARCHAR" property="masterJournalName" />
+    <result column="master_position" jdbcType="VARCHAR" property="masterPosition" />
+    <result column="master_timestamp" jdbcType="VARCHAR" property="masterTimestamp" />
+    <result column="tsdb_enable" jdbcType="VARCHAR" property="tsdbEnable" />
+    <result column="tsdb_dir" jdbcType="VARCHAR" property="tsdbDir" />
+    <result column="tsdb_url" jdbcType="VARCHAR" property="tsdbUrl" />
+    <result column="tsdb_dbUsername" jdbcType="VARCHAR" property="tsdbDbusername" />
+    <result column="tsdb_dbPassword" jdbcType="VARCHAR" property="tsdbDbpassword" />
+    <result column="standby_address" jdbcType="VARCHAR" property="standbyAddress" />
+    <result column="standby_journal_name" jdbcType="VARCHAR" property="standbyJournalName" />
+    <result column="standby_position" jdbcType="VARCHAR" property="standbyPosition" />
+    <result column="standby_timestamp" jdbcType="VARCHAR" property="standbyTimestamp" />
+    <result column="dbUsername" jdbcType="VARCHAR" property="dbusername" />
+    <result column="dbPassword" jdbcType="VARCHAR" property="dbpassword" />
+    <result column="defaultDatabaseName" jdbcType="VARCHAR" property="defaultdatabasename" />
+    <result column="connectionCharset" jdbcType="VARCHAR" property="connectioncharset" />
+    <result column="filter_regex" jdbcType="VARCHAR" property="filterRegex" />
+    <result column="filter_black_regex" jdbcType="VARCHAR" property="filterBlackRegex" />
+    <result column="fk_server_config_id" jdbcType="INTEGER" property="fkServerConfigId" />
+    <result column="inserttime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="isactive" jdbcType="BIT" property="isactive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pk_id, instance_name, mysql_slaveId, master_address, master_journal_name, master_position, 
+    master_timestamp, tsdb_enable, tsdb_dir, tsdb_url, tsdb_dbUsername, tsdb_dbPassword, 
+    standby_address, standby_journal_name, standby_position, standby_timestamp, dbUsername, 
+    dbPassword, defaultDatabaseName, connectionCharset, filter_regex, filter_black_regex, 
+    fk_server_config_id, inserttime, updatetime, isactive
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_canalinstance_config
+    where pk_id = #{pkId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_canalinstance_config
+    where pk_id = #{pkId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig">
+    insert into tb_canalinstance_config (pk_id, instance_name, mysql_slaveId, 
+      master_address, master_journal_name, master_position, 
+      master_timestamp, tsdb_enable, tsdb_dir, 
+      tsdb_url, tsdb_dbUsername, tsdb_dbPassword, 
+      standby_address, standby_journal_name, standby_position, 
+      standby_timestamp, dbUsername, dbPassword, 
+      defaultDatabaseName, connectionCharset, 
+      filter_regex, filter_black_regex, fk_server_config_id, 
+      inserttime, updatetime, isactive
+      )
+    values (#{pkId,jdbcType=INTEGER}, #{instanceName,jdbcType=VARCHAR}, #{mysqlSlaveid,jdbcType=VARCHAR}, 
+      #{masterAddress,jdbcType=VARCHAR}, #{masterJournalName,jdbcType=VARCHAR}, #{masterPosition,jdbcType=VARCHAR}, 
+      #{masterTimestamp,jdbcType=VARCHAR}, #{tsdbEnable,jdbcType=VARCHAR}, #{tsdbDir,jdbcType=VARCHAR}, 
+      #{tsdbUrl,jdbcType=VARCHAR}, #{tsdbDbusername,jdbcType=VARCHAR}, #{tsdbDbpassword,jdbcType=VARCHAR}, 
+      #{standbyAddress,jdbcType=VARCHAR}, #{standbyJournalName,jdbcType=VARCHAR}, #{standbyPosition,jdbcType=VARCHAR}, 
+      #{standbyTimestamp,jdbcType=VARCHAR}, #{dbusername,jdbcType=VARCHAR}, #{dbpassword,jdbcType=VARCHAR}, 
+      #{defaultdatabasename,jdbcType=VARCHAR}, #{connectioncharset,jdbcType=VARCHAR}, 
+      #{filterRegex,jdbcType=VARCHAR}, #{filterBlackRegex,jdbcType=VARCHAR}, #{fkServerConfigId,jdbcType=INTEGER}, 
+      #{inserttime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{isactive,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig">
+    insert into tb_canalinstance_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pkId != null">
+        pk_id,
+      </if>
+      <if test="instanceName != null">
+        instance_name,
+      </if>
+      <if test="mysqlSlaveid != null">
+        mysql_slaveId,
+      </if>
+      <if test="masterAddress != null">
+        master_address,
+      </if>
+      <if test="masterJournalName != null">
+        master_journal_name,
+      </if>
+      <if test="masterPosition != null">
+        master_position,
+      </if>
+      <if test="masterTimestamp != null">
+        master_timestamp,
+      </if>
+      <if test="tsdbEnable != null">
+        tsdb_enable,
+      </if>
+      <if test="tsdbDir != null">
+        tsdb_dir,
+      </if>
+      <if test="tsdbUrl != null">
+        tsdb_url,
+      </if>
+      <if test="tsdbDbusername != null">
+        tsdb_dbUsername,
+      </if>
+      <if test="tsdbDbpassword != null">
+        tsdb_dbPassword,
+      </if>
+      <if test="standbyAddress != null">
+        standby_address,
+      </if>
+      <if test="standbyJournalName != null">
+        standby_journal_name,
+      </if>
+      <if test="standbyPosition != null">
+        standby_position,
+      </if>
+      <if test="standbyTimestamp != null">
+        standby_timestamp,
+      </if>
+      <if test="dbusername != null">
+        dbUsername,
+      </if>
+      <if test="dbpassword != null">
+        dbPassword,
+      </if>
+      <if test="defaultdatabasename != null">
+        defaultDatabaseName,
+      </if>
+      <if test="connectioncharset != null">
+        connectionCharset,
+      </if>
+      <if test="filterRegex != null">
+        filter_regex,
+      </if>
+      <if test="filterBlackRegex != null">
+        filter_black_regex,
+      </if>
+      <if test="fkServerConfigId != null">
+        fk_server_config_id,
+      </if>
+      <if test="inserttime != null">
+        inserttime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="isactive != null">
+        isactive,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pkId != null">
+        #{pkId,jdbcType=INTEGER},
+      </if>
+      <if test="instanceName != null">
+        #{instanceName,jdbcType=VARCHAR},
+      </if>
+      <if test="mysqlSlaveid != null">
+        #{mysqlSlaveid,jdbcType=VARCHAR},
+      </if>
+      <if test="masterAddress != null">
+        #{masterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="masterJournalName != null">
+        #{masterJournalName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPosition != null">
+        #{masterPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="masterTimestamp != null">
+        #{masterTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbEnable != null">
+        #{tsdbEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDir != null">
+        #{tsdbDir,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbUrl != null">
+        #{tsdbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDbusername != null">
+        #{tsdbDbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDbpassword != null">
+        #{tsdbDbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyAddress != null">
+        #{standbyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyJournalName != null">
+        #{standbyJournalName,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyPosition != null">
+        #{standbyPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyTimestamp != null">
+        #{standbyTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="dbusername != null">
+        #{dbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbpassword != null">
+        #{dbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultdatabasename != null">
+        #{defaultdatabasename,jdbcType=VARCHAR},
+      </if>
+      <if test="connectioncharset != null">
+        #{connectioncharset,jdbcType=VARCHAR},
+      </if>
+      <if test="filterRegex != null">
+        #{filterRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="filterBlackRegex != null">
+        #{filterBlackRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="fkServerConfigId != null">
+        #{fkServerConfigId,jdbcType=INTEGER},
+      </if>
+      <if test="inserttime != null">
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig">
+    update tb_canalinstance_config
+    <set>
+      <if test="instanceName != null">
+        instance_name = #{instanceName,jdbcType=VARCHAR},
+      </if>
+      <if test="mysqlSlaveid != null">
+        mysql_slaveId = #{mysqlSlaveid,jdbcType=VARCHAR},
+      </if>
+      <if test="masterAddress != null">
+        master_address = #{masterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="masterJournalName != null">
+        master_journal_name = #{masterJournalName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPosition != null">
+        master_position = #{masterPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="masterTimestamp != null">
+        master_timestamp = #{masterTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbEnable != null">
+        tsdb_enable = #{tsdbEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDir != null">
+        tsdb_dir = #{tsdbDir,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbUrl != null">
+        tsdb_url = #{tsdbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDbusername != null">
+        tsdb_dbUsername = #{tsdbDbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="tsdbDbpassword != null">
+        tsdb_dbPassword = #{tsdbDbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyAddress != null">
+        standby_address = #{standbyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyJournalName != null">
+        standby_journal_name = #{standbyJournalName,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyPosition != null">
+        standby_position = #{standbyPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyTimestamp != null">
+        standby_timestamp = #{standbyTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="dbusername != null">
+        dbUsername = #{dbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbpassword != null">
+        dbPassword = #{dbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultdatabasename != null">
+        defaultDatabaseName = #{defaultdatabasename,jdbcType=VARCHAR},
+      </if>
+      <if test="connectioncharset != null">
+        connectionCharset = #{connectioncharset,jdbcType=VARCHAR},
+      </if>
+      <if test="filterRegex != null">
+        filter_regex = #{filterRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="filterBlackRegex != null">
+        filter_black_regex = #{filterBlackRegex,jdbcType=VARCHAR},
+      </if>
+      <if test="fkServerConfigId != null">
+        fk_server_config_id = #{fkServerConfigId,jdbcType=INTEGER},
+      </if>
+      <if test="inserttime != null">
+        inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isactive != null">
+        isactive = #{isactive,jdbcType=BIT},
+      </if>
+    </set>
+    where pk_id = #{pkId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig">
+    update tb_canalinstance_config
+    set instance_name = #{instanceName,jdbcType=VARCHAR},
+      mysql_slaveId = #{mysqlSlaveid,jdbcType=VARCHAR},
+      master_address = #{masterAddress,jdbcType=VARCHAR},
+      master_journal_name = #{masterJournalName,jdbcType=VARCHAR},
+      master_position = #{masterPosition,jdbcType=VARCHAR},
+      master_timestamp = #{masterTimestamp,jdbcType=VARCHAR},
+      tsdb_enable = #{tsdbEnable,jdbcType=VARCHAR},
+      tsdb_dir = #{tsdbDir,jdbcType=VARCHAR},
+      tsdb_url = #{tsdbUrl,jdbcType=VARCHAR},
+      tsdb_dbUsername = #{tsdbDbusername,jdbcType=VARCHAR},
+      tsdb_dbPassword = #{tsdbDbpassword,jdbcType=VARCHAR},
+      standby_address = #{standbyAddress,jdbcType=VARCHAR},
+      standby_journal_name = #{standbyJournalName,jdbcType=VARCHAR},
+      standby_position = #{standbyPosition,jdbcType=VARCHAR},
+      standby_timestamp = #{standbyTimestamp,jdbcType=VARCHAR},
+      dbUsername = #{dbusername,jdbcType=VARCHAR},
+      dbPassword = #{dbpassword,jdbcType=VARCHAR},
+      defaultDatabaseName = #{defaultdatabasename,jdbcType=VARCHAR},
+      connectionCharset = #{connectioncharset,jdbcType=VARCHAR},
+      filter_regex = #{filterRegex,jdbcType=VARCHAR},
+      filter_black_regex = #{filterBlackRegex,jdbcType=VARCHAR},
+      fk_server_config_id = #{fkServerConfigId,jdbcType=INTEGER},
+      inserttime = #{inserttime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isactive = #{isactive,jdbcType=BIT}
+    where pk_id = #{pkId,jdbcType=INTEGER}
+  </update>
+  <!-- 下面是定制，非Mybatis生成，若需要mybatis重新生成，要提前保存 -->
+  <select id="selectByExample" parameterType="com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_canalinstance_config
+   	<where>
+        <if test="instanceName != null and instanceName != ''">instance_name like '%${instanceName}%'</if>
+        <if test="masterAddress != null and masterAddress != ''">AND master_address like '%${masterAddress}%' </if>
+        <if test="fkServerConfigId != null and fkServerConfigId != '' ">AND fk_server_config_id = #{fkServerConfigId,jdbcType=INTEGER} </if>
+    </where>
+    ORDER BY updatetime desc
+  </select>
+</mapper>
