@@ -88,13 +88,13 @@ public class CanalInstanceService {
         return resultList;
     }
     
-    public List<TbCanalinstanceConfig> selectCanalInstanceConfigByMybatis(TbCanalinstanceConfig example) {
-    	List<TbCanalinstanceConfig> instanceConfigList = new ArrayList<TbCanalinstanceConfig>();
-
-    	instanceConfigList=tbCanalinstanceConfigMapper.selectByExample(example);
-    	
-    	return instanceConfigList;
-    }
+//    public List<TbCanalinstanceConfig> selectCanalInstanceConfigByMybatis(TbCanalinstanceConfig example) {
+//    	List<TbCanalinstanceConfig> instanceConfigList = new ArrayList<TbCanalinstanceConfig>();
+//
+//    	instanceConfigList=tbCanalinstanceConfigMapper.selectByExample(example);
+//    	
+//    	return instanceConfigList;
+//    }
     
     public ResultResponse insertCanalInstanceConfig(CanalInstanceConfigDto canalInstanceConfig) {
         // 判断是否已注册

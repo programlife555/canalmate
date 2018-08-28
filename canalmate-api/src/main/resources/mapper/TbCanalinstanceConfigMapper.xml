@@ -347,8 +347,8 @@
     <include refid="Base_Column_List" />
     from tb_canalinstance_config
    	<where>
-        <if test="instanceName != null and instanceName != ''">instance_name like '%${instanceName}%'</if>
-        <if test="masterAddress != null and masterAddress != ''">AND master_address like '%${masterAddress}%' </if>
+        <if test="instanceName != null and instanceName != ''">instance_name like '%#{instanceName}%'</if>
+        <if test="masterAddress != null and masterAddress != ''">AND master_address like '%#{masterAddress}%' </if>
         <if test="fkServerConfigId != null and fkServerConfigId != '' ">AND fk_server_config_id = #{fkServerConfigId,jdbcType=INTEGER} </if>
     </where>
     ORDER BY updatetime desc

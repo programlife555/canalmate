@@ -24,10 +24,23 @@ public class PropertiesUtils
 				      String osuser = properties.getProperty("osuser");
 				      String  passwd = properties.getProperty("passwd");
 				      String  port = properties.getProperty("port");
+				      String PROTOCOL = properties.getProperty("smtp.PROTOCOL");
+				      String  HOST = properties.getProperty("smtp.HOST");
+				      String  PORT = properties.getProperty("smtp.PORT");
+				      String  IS_AUTH = properties.getProperty("smtp.IS_AUTH");
+				      String  IS_ENABLED_DEBUG_MOD = properties.getProperty("smtp.IS_ENABLED_DEBUG_MOD");
+				      String  from = properties.getProperty("smtp.from");
 				      
 				      keyValues.put("osuser", osuser);
 				      keyValues.put("passwd", passwd);
 				      keyValues.put("port", port);
+				      
+				      keyValues.put("PROTOCOL", PROTOCOL);
+				      keyValues.put("HOST", HOST);
+				      keyValues.put("PORT", PORT);
+				      keyValues.put("IS_AUTH", IS_AUTH);
+				      keyValues.put("IS_ENABLED_DEBUG_MOD", IS_ENABLED_DEBUG_MOD);
+				      keyValues.put("from", from);
 	
 				      properties.clear();
 		    		 
