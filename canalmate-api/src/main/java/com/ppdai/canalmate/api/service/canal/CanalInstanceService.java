@@ -7,11 +7,9 @@ import com.ppdai.canalmate.api.entity.dto.MenuDto;
 import com.ppdai.canalmate.api.entity.dto.ResultResponse;
 import com.ppdai.canalmate.api.entity.dto.UserDto;
 import com.ppdai.canalmate.api.entity.dto.canal.CanalInstanceConfigDto;
-import com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig;
 import com.ppdai.canalmate.common.utils.ReponseEnum;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;

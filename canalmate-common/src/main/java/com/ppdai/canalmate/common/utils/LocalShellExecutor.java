@@ -40,7 +40,6 @@ public class LocalShellExecutor {
 		whiteList.add("scp");
 		whiteList.add("start");
 		
-		
 		boolean result=false;
 		for(String cmd:whiteList) {
 			if(shellCommand.indexOf(cmd)>=0) {

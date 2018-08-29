@@ -15,9 +15,9 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
     	ApplicationContext ctx=SpringApplication.run(Application.class, args);
     	String[] activeProfiles=ctx.getEnvironment().getActiveProfiles();
-    	for (String profile : activeProfiles) {  
+    	for (String profile : activeProfiles) {
             System.out.printf("Spring Boot 使用profile为:{}" , profile);  
-        } 
+        }
     }
 
     @Override

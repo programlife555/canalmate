@@ -4,12 +4,14 @@ import com.ppdai.canalmate.api.core.BaseController;
 import com.ppdai.canalmate.api.core.Result;
 import com.ppdai.canalmate.api.core.ResultCode;
 import com.ppdai.canalmate.api.dataaccess.auth.UserDataAccess;
+import com.ppdai.canalmate.api.entity.dto.LoginResponse;
 import com.ppdai.canalmate.api.entity.dto.MenuDto;
 import com.ppdai.canalmate.api.entity.dto.ResultResponse;
 import com.ppdai.canalmate.api.entity.dto.UserDto;
 import com.ppdai.canalmate.api.entity.dto.institute.InstitutionReponseEnum;
 import com.ppdai.canalmate.common.cons.CanalConstants;
 import com.ppdai.canalmate.common.utils.MD5Encrypt;
+import com.ppdai.canalmate.common.utils.P;
 import com.ppdai.canalmate.common.utils.ReponseEnum;
 
 import io.swagger.annotations.Api;
@@ -34,7 +36,6 @@ import java.util.List;
 
 /**
  * 用户Controller
- *
  */
 @Api(value = "UserController", description = "用户,菜单相关的操作")
 @RestController
@@ -133,7 +134,15 @@ public class UserController extends BaseController{
     Result selectUserMenuAuth(@RequestParam(value = "userCode") String userCode) {
     	
     	List<MenuDto> menuList = new ArrayList<MenuDto>();
-    	menuList = userDataAccess.selectUserMenuAuth(userCode);
+    	boolean isAdmin=userDataAccess.isAdmin(userCode);
+    	String adminRoleCode="1";//管理员角色ID，与数据库值关联
+    	String notAdminRoleCode="2";//普通用户角色ID，与数据库关联
+		
+    	if(isAdmin) {
+    		menuList = userDataAccess.selectUserMenuAuth(adminRoleCode);
+    	}else {
+    		menuList = userDataAccess.selectUserMenuAuth(notAdminRoleCode);
+    	}
     	
         Result result = new Result();
         result.setCode(ReponseEnum.SUCCEED.getResCode());
@@ -149,11 +158,14 @@ public class UserController extends BaseController{
     public ResultResponse userLogin(HttpServletRequest request, HttpServletResponse response,
     		@ApiParam(name = "userCode", required = true, value = "用户名") @RequestParam(value = "userCode") String userCode,
     		@ApiParam(name = "userPassword", required = true, value = "用户密码") @RequestParam(value = "userPassword") String userPassword) {
-    	ResultResponse resultResponse = new ResultResponse();
+    	//ResultResponse resultResponse = new ResultResponse();
+    	LoginResponse resultResponse = new LoginResponse();
         resultResponse = userDataAccess.login(userCode, MD5Encrypt.generatePassword(userPassword + CanalConstants.PWD_postfix));
+       
         if (resultResponse == null || !resultResponse.isSucceed()) {
             return new ResultResponse(false, ReponseEnum.FAIL.getResCode(), "用户名或密码输入错误！");
         } else {
+
             // 登录成功,加密,签名
             try {
                 Cookie codeCookie = new Cookie("userCode", URLEncoder.encode(userCode, "UTF-8"));
