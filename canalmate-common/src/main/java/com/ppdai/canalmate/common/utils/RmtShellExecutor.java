@@ -147,22 +147,22 @@ public class RmtShellExecutor {
 
     public static void main(String[] args) {
 
-        String usr = "hadoop";
-        String password = "hadoop";
-        String serverIP = "10.114.24.226";
-        int port = 23245;
-
-        RmtShellExecutor exe = new RmtShellExecutor(serverIP, usr, password,port);
-
-        Map<String,Object> outInf;
-
-        try {
-            String cmd = "cat /data/1.log";
-            outInf = exe.exec(cmd);
-            System.out.println("outInf= " + outInf);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String usr = "hadoop"; 
+//        String password = "hadoop";
+//        String serverIP = "127.0.0.1";
+//        int port = 23245;
+//
+//        RmtShellExecutor exe = new RmtShellExecutor(serverIP, usr, password,port);
+//
+//        Map<String,Object> outInf;
+//
+//        try {
+//            String cmd = "cat /data/1.log";
+//            outInf = exe.exec(cmd);
+//            System.out.println("outInf= " + outInf);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 

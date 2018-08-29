@@ -12,8 +12,8 @@
 		</commentGenerator>
 		<!--数据库链接URL，用户名、密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://10.114.24.175:3306/canal_db?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false" userId="canal_user"
-			password="canal_user" />
+			connectionURL="jdbc:mysql://xxxxxx:3306/xxxxxxx?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false" userId="xxxxxx"
+			password="xxxxxx" />
 		<!--
        		 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
             true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal

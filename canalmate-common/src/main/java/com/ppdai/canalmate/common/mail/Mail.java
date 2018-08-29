@@ -14,39 +14,37 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.ppdai.canalmate.common.utils.P;
+import com.ppdai.canalmate.common.utils.PropertiesUtils;
 
 
 public class Mail
 {
 	
     // 邮件发送协议   
-    private final static String PROTOCOL = "smtp";   
-  
+    private static String PROTOCOL;   
     // SMTP邮件服务器   
-    private final static String HOST = "smtp.ppdaicorp.com";   
-  
+    private static String HOST;   
     // SMTP邮件服务器默认端口   
-    private final static String PORT = "25";   
-  
+    private static String PORT;
     // 是否要求身份认证   
-    private final static String IS_AUTH = "false";   
-  
+    private static String IS_AUTH;
     // 是否启用调试模式（启用调试模式可打印客户端与服务器交互过程时一问一答的响应消息）   
-    private final static String IS_ENABLED_DEBUG_MOD = "false";   
-  
+    private static String IS_ENABLED_DEBUG_MOD;   
     // 发件人  
-//    private static String from = "sunjunjie@ppdai.com";
-    private static String from = "dba_mysql@ppdai.com";
-
-    
-  
-    // 收件人   
-    private static String to = "xxxx@163.com"; 
-    
-    // 初始化连接邮件服务器的会话信息   
+    private static String from;
+    // 初始化连接邮件服务器的会话信息
     private static Properties props = null;   
     
-    static {   
+    static {
+    	
+    	PROTOCOL=PropertiesUtils.getValue("PROTOCOL");
+    	HOST=PropertiesUtils.getValue("HOST");
+    	PORT=PropertiesUtils.getValue("PORT");
+    	IS_AUTH=PropertiesUtils.getValue("IS_AUTH");
+    	IS_ENABLED_DEBUG_MOD=PropertiesUtils.getValue("IS_ENABLED_DEBUG_MOD");
+    	from=PropertiesUtils.getValue("from");
+
+    	
         props = new Properties();   
         props.setProperty("mail.transport.protocol", PROTOCOL);   
         props.setProperty("mail.smtp.host", HOST);   
@@ -61,12 +59,11 @@ public class Mail
     try
     {
 	  	//邮件标题和内容
-	    String title="chh邮件测试_title";
-	    String content="chh邮件测试_正文";
+	    String title="邮件测试_title";
+	    String content="邮件测试_正文";
 	    //群发的收件人
 		List<String> addrList = new ArrayList<String>();  
-		addrList.add("changhonghao@ppdai.com");
-//		addrList.add("sunjunjie@ppdai.com");
+		addrList.add("xxxxx@xxxx.com");
 	
 		int size = addrList.size();  
 		String[] addressStrT = (String[])addrList.toArray(new String[size]);
@@ -75,6 +72,7 @@ public class Mail
 		}
     catch (Exception localException)
     {
+    	
     }
   }
 

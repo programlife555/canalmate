@@ -44,16 +44,13 @@ public class UserDataAccess {
     @Autowired
     UserRoleDataAccess userRoleDataAccess;
 
+    //根据rolecode,选择菜单，role_code=1:管理员，role_code=2:普通用户
     private static String selectUserMenuAuthSql = "select t.menu_code,t.menu_name, t.menu_url, t.menu_icon, t.superior_menu, t.menu_serial \r\n" + 
     		"from tb_menu t\r\n" + 
     		"where menu_code in(\r\n" + 
     		"select menu_code\r\n" + 
     		"from tb_menu_role t3\r\n" + 
-    		"where role_code in(\r\n" + 
-    		"select role_code\r\n" + 
-    		"from tb_user_role t2\r\n" + 
-    		"where t2.user_code = ? and t2.isactive = '1'\r\n" + 
-    		")\r\n" + 
+    		"where role_code = ? \r\n" + 
     		"and t3.isactive = '1'\r\n" + 
     		")\r\n" + 
     		"and t.isactive = '1'";
@@ -75,15 +72,15 @@ public class UserDataAccess {
     private static String deleteUserSql = "update tb_user set isactive = 0 where pk_user_id = ?";
 
     /**
-     * 根据用户编号查菜单权限
-     *
+     * 根据角色编号查菜单权限
+     * role_code=1:管理员，role_code=2:普通用户
      * @param userCode
      * @return
      */
-    public List<MenuDto> selectUserMenuAuth(String userCode) {
+    public List<MenuDto> selectUserMenuAuth(String role_code) {
     	//查询所有菜单
         List<MenuDto> allMenuList  = new ArrayList<MenuDto>();
-        mysqlJdbcTemplate.query(selectUserMenuAuthSql, new Object[]{userCode}, new RowCallbackHandler() {
+        mysqlJdbcTemplate.query(selectUserMenuAuthSql, new Object[]{role_code}, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
                 String menuCode = rs.getString(1);
@@ -335,6 +332,16 @@ public class UserDataAccess {
         LoginResponse loginResponse=new LoginResponse(true, ReponseEnum.SUCCEED.getResCode(), ReponseEnum.SUCCEED.getResMsg());
         loginResponse.setIsAdmin(isAdmin);
         return loginResponse;
+    }
+    
+    public boolean isAdmin(String userCode) {
+    	boolean isAdmin=false;//默认不是admin角色
+    	//到这里，用户已经登录成功，检查用户角色
+        Integer j = mysqlJdbcTemplate.queryForObject(selectUserIsAdmin, Integer.class, new Object[]{userCode});
+        if (j > 0) {
+        	isAdmin=true;
+        }
+        return isAdmin;
     }
 
     public ResultResponse deleteByIds(String[] ids) {

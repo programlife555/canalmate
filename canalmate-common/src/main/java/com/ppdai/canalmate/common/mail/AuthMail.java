@@ -16,6 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.ppdai.canalmate.common.utils.P;
+import com.ppdai.canalmate.common.utils.PropertiesUtils;
 
 
 public class AuthMail
@@ -70,7 +71,6 @@ public class AuthMail
       Authenticator auth = new Email_Autherticator(username,passwd);
       props.put("mail.smtp.host", smtp);
       props.put("mail.smtp.port", port);
-      props.put("mail.smtp.auth", "true");
 
       Session session = Session.getDefaultInstance(props, auth);
       session.setDebug(false);

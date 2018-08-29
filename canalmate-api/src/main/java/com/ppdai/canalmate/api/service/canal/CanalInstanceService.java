@@ -7,11 +7,9 @@ import com.ppdai.canalmate.api.entity.dto.MenuDto;
 import com.ppdai.canalmate.api.entity.dto.ResultResponse;
 import com.ppdai.canalmate.api.entity.dto.UserDto;
 import com.ppdai.canalmate.api.entity.dto.canal.CanalInstanceConfigDto;
-import com.ppdai.canalmate.api.model.canal.server.TbCanalinstanceConfig;
 import com.ppdai.canalmate.common.utils.ReponseEnum;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -88,13 +86,13 @@ public class CanalInstanceService {
         return resultList;
     }
     
-    public List<TbCanalinstanceConfig> selectCanalInstanceConfigByMybatis(TbCanalinstanceConfig example) {
-    	List<TbCanalinstanceConfig> instanceConfigList = new ArrayList<TbCanalinstanceConfig>();
-
-    	instanceConfigList=tbCanalinstanceConfigMapper.selectByExample(example);
-    	
-    	return instanceConfigList;
-    }
+//    public List<TbCanalinstanceConfig> selectCanalInstanceConfigByMybatis(TbCanalinstanceConfig example) {
+//    	List<TbCanalinstanceConfig> instanceConfigList = new ArrayList<TbCanalinstanceConfig>();
+//
+//    	instanceConfigList=tbCanalinstanceConfigMapper.selectByExample(example);
+//    	
+//    	return instanceConfigList;
+//    }
     
     public ResultResponse insertCanalInstanceConfig(CanalInstanceConfigDto canalInstanceConfig) {
         // 判断是否已注册

@@ -8,8 +8,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -30,9 +32,29 @@ public class LocalShellExecutor {
 
 	// 发送文件到Kondor系统的Shell的文件名(绝对路径)
 	private static final String sendKondorShellName = basePath + "xxx.sh";
+	
+	//检查命令的白名单
+	private static boolean checkCommand(String shellCommand) {
+		List<String> whiteList=new ArrayList<String>();
+		//允许的命令加入白名单
+		whiteList.add("scp");
+		whiteList.add("start");
+		
+		boolean result=false;
+		for(String cmd:whiteList) {
+			if(shellCommand.indexOf(cmd)>=0) {
+				result=true;
+				break;
+			}
+		}
+		return result;
+	}
 
 	public static Map<String ,Object> executeShell(String shellCommand) {
 		logger.info("===将要在本地执行的shellCommand:" + shellCommand);
+		if(!checkCommand(shellCommand)) {
+			logger.error("===将要在本地执行的shellCommand没通过白名单检查，命令为：" + shellCommand);
+		}
 		int success = -1;// 如果脚本执行的返回值不是0,则表示脚本执行失败，否则（值为0）脚本执行成功。0:成功，非0：失败
 		StringBuffer stringBuffer = new StringBuffer();
 		BufferedReader bufferedReader = null;
