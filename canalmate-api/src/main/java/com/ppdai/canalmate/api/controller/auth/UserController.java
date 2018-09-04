@@ -161,11 +161,11 @@ public class UserController extends BaseController{
     	//ResultResponse resultResponse = new ResultResponse();
     	LoginResponse resultResponse = new LoginResponse();
         resultResponse = userDataAccess.login(userCode, MD5Encrypt.generatePassword(userPassword + CanalConstants.PWD_postfix));
-       
+        
         if (resultResponse == null || !resultResponse.isSucceed()) {
             return new ResultResponse(false, ReponseEnum.FAIL.getResCode(), "用户名或密码输入错误！");
         } else {
-
+        	P.p("====新方法");
             // 登录成功,加密,签名
             try {
                 Cookie codeCookie = new Cookie("userCode", URLEncoder.encode(userCode, "UTF-8"));
