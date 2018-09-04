@@ -8,6 +8,7 @@
 .idea
 *.iml
 *.log
+fabu.txt
 /WebContent/WEB-INF/classes/*
 target/
 logs/
