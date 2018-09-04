@@ -21,11 +21,11 @@ public class DBConfiguration {
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource mysqlDataSource() {
         DataSource build = DataSourceBuilder.create().build();
-        try {
-			build.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//        try {
+//			build.getConnection();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
         org.apache.tomcat.jdbc.pool.DataSource typedDS = (org.apache.tomcat.jdbc.pool.DataSource) build;
         typedDS.setValidationQuery("SELECT 1");
         typedDS.setTestOnBorrow(true);
