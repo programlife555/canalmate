@@ -30,6 +30,8 @@ public class PropertiesUtils
 				      String  IS_AUTH = properties.getProperty("smtp.IS_AUTH");
 				      String  IS_ENABLED_DEBUG_MOD = properties.getProperty("smtp.IS_ENABLED_DEBUG_MOD");
 				      String  from = properties.getProperty("smtp.from");
+				      String  gapHour = properties.getProperty("gap.hour");
+				      String  gapMin = properties.getProperty("gap.min");
 				      
 				      keyValues.put("osuser", osuser);
 				      keyValues.put("passwd", passwd);
@@ -41,6 +43,9 @@ public class PropertiesUtils
 				      keyValues.put("IS_AUTH", IS_AUTH);
 				      keyValues.put("IS_ENABLED_DEBUG_MOD", IS_ENABLED_DEBUG_MOD);
 				      keyValues.put("from", from);
+				      
+				      keyValues.put("gapHour", gapHour);
+				      keyValues.put("gapMin", gapMin);
 	
 				      properties.clear();
 		    		 

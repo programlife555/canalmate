@@ -165,7 +165,7 @@ public class UserController extends BaseController{
         if (resultResponse == null || !resultResponse.isSucceed()) {
             return new ResultResponse(false, ReponseEnum.FAIL.getResCode(), "用户名或密码输入错误！");
         } else {
-        	P.p("====新方法");
+        	P.p("=================发布对应的版本时间：20180906");
             // 登录成功,加密,签名
             try {
                 Cookie codeCookie = new Cookie("userCode", URLEncoder.encode(userCode, "UTF-8"));
@@ -188,6 +188,5 @@ public class UserController extends BaseController{
         }
         return resultResponse;
     }
-
 
 }
