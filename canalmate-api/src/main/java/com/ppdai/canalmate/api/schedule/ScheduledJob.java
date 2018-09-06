@@ -237,11 +237,12 @@ public class ScheduledJob {
         String isSendEmail = tbConfig.getConfigValue();
         if (StringUtils.isNotBlank(isSendEmail) && isSendEmail.equals("1")) {
             logger.info("=====开启了发邮件标志，现在发送邮件");
+            logger.info("邮件内容如下：\r\n" + contentSb.toString());
             sendMail(mergeCanalWarn);
         } else {
         	if(canalWarnList!=null&&canalWarnList.size()>0) {
-                logger.info("没有开启发邮件标志，在后台打印信息，不发送");
-                logger.info("\r\n" + contentSb.toString());
+                logger.info("======没有开启发邮件标志，在后台打印邮件内容，不发送");
+                logger.info("邮件内容如下：\r\n" + contentSb.toString());
             }
         }
 
@@ -254,24 +255,43 @@ public class ScheduledJob {
         //获取邮件content
         String content = canalWarn.getWarnMessage();
 
+        if(StringUtils.isBlank(content)) {
+        	logger.info("=====邮件内容为空，不发送：content："+content);
+        	return;
+        }
+
+        
         //获取邮件收件人列表，找到系统管理员角色对应的用户的email
         UserRoleDto userRoleDto = new UserRoleDto();
         userRoleDto.setRoleCode("1");//系统管理员的roleid=1;
         List<UserRoleDto> userRoleList = userRoleDataAccess.selectRole(userRoleDto);
+        StringBuilder emails=new StringBuilder();
         //群发的收件人addressStrT
         List<String> addrList = new ArrayList<String>();
         for (UserRoleDto userRole : userRoleList) {
-            Integer userid = userRole.getPkUserRoleId();
-            UserDto userDto = userDataAccess.selectUserById(userid);
-            if (userDto != null) {
-                String email = userDto.getUserEmail();
+            String userCode = userRole.getUserCode();
+            String userName=userRole.getUserName();
+            UserDto userDto=new UserDto();
+            userDto.setUserCode(userCode);
+            userDto.setUserName(userName);
+            List<UserDto> userDtoList = userDataAccess.selectUserByParam(userDto);
+            if (userDtoList != null && userDtoList.size()>0) {
+            	UserDto adminUserDto=userDtoList.get(0);//默认取第一个，认为userCode和userName 取唯一值
+                String email = adminUserDto.getUserEmail();
                 if (StringUtils.isNotBlank(email)) {
                     addrList.add(email);
+                    emails.append(email+",");
+                }else {
+                    logger.error("====对应管理员的邮箱为空，userCode："+userCode+",userName:"+userName);
+
                 }
+            }else {
+                logger.error("=====userCode："+userCode+",userName:"+userName+" 对应的tb_user表中没记录");
             }
         }
         int size = addrList.size();
         String[] addressStrT = (String[]) addrList.toArray(new String[size]);
+        logger.info("=====收件人邮箱列表："+emails.toString());
 
         //发邮件
         Mail.doSendMail(title, content, addressStrT);

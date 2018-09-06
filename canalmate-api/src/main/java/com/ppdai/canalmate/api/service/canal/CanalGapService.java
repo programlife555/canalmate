@@ -180,8 +180,8 @@ public class CanalGapService {
                 Long GAP_HOUR_threshold=Long.parseLong(PropertiesUtils.getValue("gapHour"));
                 Long GAP_MIN_threshold=Long.parseLong(PropertiesUtils.getValue("gapMin"));
                 
-                logger.info("=====GAP_HOUR_threshold:"+GAP_HOUR_threshold);
-                logger.info("=====GAP_MIN_threshold:"+GAP_MIN_threshold);
+                logger.debug("=====GAP_HOUR_threshold告警阈值:"+GAP_HOUR_threshold);
+                logger.debug("=====GAP_MIN_threshold告警阈值:"+GAP_MIN_threshold);
 
                 //最后总结判断
                 if(!StringUtils.isBlank(colour)) {//若color不为空，说明前面赋值为红，说明已经有问题，不用判断
@@ -197,10 +197,10 @@ public class CanalGapService {
                 	logger.debug("gap_hour:"+gapHour);
                 	//先判断是否超过了小时级别告警，若超过小时级别，则直接告警，后面分钟级别不判断。若没超过小时级别，再判断是否超过分钟级别。
                 	if(gapHour>GAP_HOUR_threshold) {
-                		commentSb.append("client位点时间比当前时间已延迟"+gapHour+"小时,超过"+CanalConstants.GAP_HOUR_threshold+"小时,");
+                		commentSb.append("client位点时间比当前时间已延迟"+gapHour+"小时,超过"+GAP_HOUR_threshold+"小时阈值,");
                 		colour=CanalConstants.YELLOW;
                 	}else if(gapMin>GAP_MIN_threshold) {
-                		commentSb.append("client位点时间比当前时间已延迟"+gapMin+"分钟,超过"+CanalConstants.GAP_MIN_threshold+"分钟,");
+                		commentSb.append("client位点时间比当前时间已延迟"+gapMin+"分钟,超过"+GAP_MIN_threshold+"分钟阈值,");
                 		colour=CanalConstants.YELLOW;
                 	}else{
                 		commentSb.append("正常,");
