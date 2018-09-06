@@ -72,7 +72,7 @@ public class ScheduledJob {
 
     private Integer count0 = 0;
     public final static long ONE_MINUTE = 60 * 1000;
-    public final static long CHECK_INTERVAL_MINUTE = 10 * ONE_MINUTE;
+    public final static long CHECK_INTERVAL_MINUTE = 10 * ONE_MINUTE; //每10分钟调度一次检查进程
 
     /* 间隔：每隔 fixedRate 时间 ，该程序就出发一次。
      * 作用：监控canal server 和canal client,client gap的进程状态，并把信息封装成canalWarn，发送到管理员角色的用户的邮箱中。
