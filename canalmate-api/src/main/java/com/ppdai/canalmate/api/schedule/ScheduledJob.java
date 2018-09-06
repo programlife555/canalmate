@@ -72,7 +72,7 @@ public class ScheduledJob {
 
     private Integer count0 = 0;
     public final static long ONE_MINUTE = 60 * 1000;
-    public final static long CHECK_INTERVAL_MINUTE = 5 * ONE_MINUTE;
+    public final static long CHECK_INTERVAL_MINUTE = 10 * ONE_MINUTE;
 
     /* 间隔：每隔 fixedRate 时间 ，该程序就出发一次。
      * 作用：监控canal server 和canal client,client gap的进程状态，并把信息封装成canalWarn，发送到管理员角色的用户的邮箱中。
@@ -198,11 +198,12 @@ public class ScheduledJob {
 
         }
 
-        sendMail(canalWarnList);
 
         if(canalWarnList==null||canalWarnList.size()==0) {
             logger.info("-----------------canal集群和canal client状态正常，无告警------");
-
+        }else {
+            logger.info("===============canal集群和canal client检测到状态异常，准备告警======");
+        	sendMail(canalWarnList);
         }
         long t2=System.currentTimeMillis();
 
@@ -223,10 +224,7 @@ public class ScheduledJob {
             contentSb.append("\r\n");
             contentSb.append("告警时间 : " + DateUtil.DateToStr(canalWarn.getWarnTime()));
             contentSb.append("\r\n\r\n");
-
         }
-        
-        
         
         mergeCanalWarn.setWarnType(title);
         mergeCanalWarn.setWarnMessage(contentSb.toString());
@@ -235,7 +233,7 @@ public class ScheduledJob {
         String configName = "is_send_mail";
         TbConfig tbConfig = tbConfigService.selectByConfigName(configName);
         String isSendEmail = tbConfig.getConfigValue();
-        if (StringUtils.isNotBlank(isSendEmail) && isSendEmail.equals("1")) {
+        if (StringUtils.isNotBlank(isSendEmail) && isSendEmail.equals("1") && StringUtils.isNotBlank(contentSb.toString())) {
             logger.info("=====开启了发邮件标志，现在发送邮件");
             logger.info("邮件内容如下：\r\n" + contentSb.toString());
             sendMail(mergeCanalWarn);
