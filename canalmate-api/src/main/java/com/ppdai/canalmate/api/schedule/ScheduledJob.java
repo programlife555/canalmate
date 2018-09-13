@@ -72,7 +72,7 @@ public class ScheduledJob {
 
     private Integer count0 = 0;
     public final static long ONE_MINUTE = 60 * 1000;
-    public final static long CHECK_INTERVAL_MINUTE = 5 * ONE_MINUTE;
+    public final static long CHECK_INTERVAL_MINUTE = 10 * ONE_MINUTE; //每10分钟调度一次检查进程
 
     /* 间隔：每隔 fixedRate 时间 ，该程序就出发一次。
      * 作用：监控canal server 和canal client,client gap的进程状态，并把信息封装成canalWarn，发送到管理员角色的用户的邮箱中。
@@ -198,11 +198,12 @@ public class ScheduledJob {
 
         }
 
-        sendMail(canalWarnList);
 
         if(canalWarnList==null||canalWarnList.size()==0) {
             logger.info("-----------------canal集群和canal client状态正常，无告警------");
-
+        }else {
+            logger.info("===============canal集群和canal client检测到状态异常，准备告警======");
+        	sendMail(canalWarnList);
         }
         long t2=System.currentTimeMillis();
 
@@ -223,10 +224,7 @@ public class ScheduledJob {
             contentSb.append("\r\n");
             contentSb.append("告警时间 : " + DateUtil.DateToStr(canalWarn.getWarnTime()));
             contentSb.append("\r\n\r\n");
-
         }
-        
-        
         
         mergeCanalWarn.setWarnType(title);
         mergeCanalWarn.setWarnMessage(contentSb.toString());
@@ -235,13 +233,14 @@ public class ScheduledJob {
         String configName = "is_send_mail";
         TbConfig tbConfig = tbConfigService.selectByConfigName(configName);
         String isSendEmail = tbConfig.getConfigValue();
-        if (StringUtils.isNotBlank(isSendEmail) && isSendEmail.equals("1")) {
+        if (StringUtils.isNotBlank(isSendEmail) && isSendEmail.equals("1") && StringUtils.isNotBlank(contentSb.toString())) {
             logger.info("=====开启了发邮件标志，现在发送邮件");
+            logger.info("邮件内容如下：\r\n" + contentSb.toString());
             sendMail(mergeCanalWarn);
         } else {
         	if(canalWarnList!=null&&canalWarnList.size()>0) {
-                logger.info("没有开启发邮件标志，在后台打印信息，不发送");
-                logger.info("\r\n" + contentSb.toString());
+                logger.info("======没有开启发邮件标志，在后台打印邮件内容，不发送");
+                logger.info("邮件内容如下：\r\n" + contentSb.toString());
             }
         }
 
@@ -254,24 +253,43 @@ public class ScheduledJob {
         //获取邮件content
         String content = canalWarn.getWarnMessage();
 
+        if(StringUtils.isBlank(content)) {
+        	logger.info("=====邮件内容为空，不发送：content："+content);
+        	return;
+        }
+
+        
         //获取邮件收件人列表，找到系统管理员角色对应的用户的email
         UserRoleDto userRoleDto = new UserRoleDto();
         userRoleDto.setRoleCode("1");//系统管理员的roleid=1;
         List<UserRoleDto> userRoleList = userRoleDataAccess.selectRole(userRoleDto);
+        StringBuilder emails=new StringBuilder();
         //群发的收件人addressStrT
         List<String> addrList = new ArrayList<String>();
         for (UserRoleDto userRole : userRoleList) {
-            Integer userid = userRole.getPkUserRoleId();
-            UserDto userDto = userDataAccess.selectUserById(userid);
-            if (userDto != null) {
-                String email = userDto.getUserEmail();
+            String userCode = userRole.getUserCode();
+            String userName=userRole.getUserName();
+            UserDto userDto=new UserDto();
+            userDto.setUserCode(userCode);
+            userDto.setUserName(userName);
+            List<UserDto> userDtoList = userDataAccess.selectUserByParam(userDto);
+            if (userDtoList != null && userDtoList.size()>0) {
+            	UserDto adminUserDto=userDtoList.get(0);//默认取第一个，认为userCode和userName 取唯一值
+                String email = adminUserDto.getUserEmail();
                 if (StringUtils.isNotBlank(email)) {
                     addrList.add(email);
+                    emails.append(email+",");
+                }else {
+                    logger.error("====对应管理员的邮箱为空，userCode："+userCode+",userName:"+userName);
+
                 }
+            }else {
+                logger.error("=====userCode："+userCode+",userName:"+userName+" 对应的tb_user表中没记录");
             }
         }
         int size = addrList.size();
         String[] addressStrT = (String[]) addrList.toArray(new String[size]);
+        logger.info("=====收件人邮箱列表："+emails.toString());
 
         //发邮件
         Mail.doSendMail(title, content, addressStrT);

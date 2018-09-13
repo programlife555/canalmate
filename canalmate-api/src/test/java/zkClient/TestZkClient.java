@@ -13,7 +13,7 @@ import com.ppdai.canalmate.common.utils.ZookeeperPathUtils;
 public class TestZkClient {
 //    public static void main(String[] args) throws InterruptedException {
 //
-//        ZkClient zkClient = new ZkClient("10.114.24.99:2181",5000);
+//        ZkClient zkClient = new ZkClient("xxxxxx:2181",5000);
 //        System.out.println("ZK 成功建立连接！");
 //
 ////        String path = "/zk-test";

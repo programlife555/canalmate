@@ -21,6 +21,7 @@ import com.ppdai.canalmate.common.utils.CanalZKUtils;
 import com.ppdai.canalmate.common.utils.DBUtils;
 import com.ppdai.canalmate.common.utils.DateUtil;
 import com.ppdai.canalmate.common.utils.P;
+import com.ppdai.canalmate.common.utils.PropertiesUtils;
 import com.ppdai.canalmate.common.utils.ReponseEnum;
 import com.ppdai.canalmate.common.utils.ZKClient;
 import com.ppdai.canalmate.common.utils.ZookeeperPathUtils;
@@ -176,6 +177,12 @@ public class CanalGapService {
             		colour=CanalConstants.RED;
                 }
                 
+                Long GAP_HOUR_threshold=Long.parseLong(PropertiesUtils.getValue("gapHour"));
+                Long GAP_MIN_threshold=Long.parseLong(PropertiesUtils.getValue("gapMin"));
+                
+                logger.debug("=====GAP_HOUR_threshold告警阈值:"+GAP_HOUR_threshold);
+                logger.debug("=====GAP_MIN_threshold告警阈值:"+GAP_MIN_threshold);
+
                 //最后总结判断
                 if(!StringUtils.isBlank(colour)) {//若color不为空，说明前面赋值为红，说明已经有问题，不用判断
                 	logger.debug("检查gap有问题，不用判断，直接标红,原因："+commentSb.toString());
@@ -185,16 +192,22 @@ public class CanalGapService {
                 	Long destinationTimestamp=Long.valueOf(instanceTimestamp);
                 	Long currentTimestamp=DateUtil.getUTCTimeFromCurrentDate();
                 	Long gapHour=(currentTimestamp-destinationTimestamp)/1000/60/60;
+                	Long gapMin=(currentTimestamp-destinationTimestamp)/1000/60;
                 	logger.debug("gap_second:"+(currentTimestamp-destinationTimestamp)+",current_timestamp:"+currentTimestamp+",destination_timestamp:"+destinationTimestamp);
                 	logger.debug("gap_hour:"+gapHour);
-                	if(gapHour>CanalConstants.GAP_threshold) {
-                		commentSb.append("client位点时间比当前时间已延迟"+gapHour+"小时,超过"+CanalConstants.GAP_threshold+"小时,");
+                	//先判断是否超过了小时级别告警，若超过小时级别，则直接告警，后面分钟级别不判断。若没超过小时级别，再判断是否超过分钟级别。
+                	if(gapHour>GAP_HOUR_threshold) {
+                		commentSb.append("client位点时间比当前时间已延迟"+gapHour+"小时,超过"+GAP_HOUR_threshold+"小时阈值,");
                 		colour=CanalConstants.YELLOW;
-                	}else {
+                	}else if(gapMin>GAP_MIN_threshold) {
+                		commentSb.append("client位点时间比当前时间已延迟"+gapMin+"分钟,超过"+GAP_MIN_threshold+"分钟阈值,");
+                		colour=CanalConstants.YELLOW;
+                	}else{
                 		commentSb.append("正常,");
                 		colour=CanalConstants.GREEN;//唯一能标注绿色正常的情况
                 	}
                 }
+                //去掉最后的,逗号
                 String comment=commentSb.toString();
                 if(!StringUtils.isBlank(comment)) {
                 	comment=comment.substring(0, comment.length()-1);

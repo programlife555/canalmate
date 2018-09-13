@@ -161,7 +161,7 @@ public class CanalProcessController extends BaseController{
     		//从每个destination中取 cluster 节点的状态
     		List<ZKDestinationClusterNode> list=zKDestinationBean.getzKDestinationClusterNodeList();
     		for(ZKDestinationClusterNode node: list) {
-    			String addressPort=node.getAddressPort();//例如： 10.114.24.232:11111，从zk获取
+    			String addressPort=node.getAddressPort();//例如： xxxxx:11111，从zk获取
     			//若/otter/canal/destinations/xxxxx/running 的节点与/otter/canal/destinations/xxxx/cluster 下相同，则该节点为active
     			Boolean active=node.getActive();
     			if(active) {//若是active

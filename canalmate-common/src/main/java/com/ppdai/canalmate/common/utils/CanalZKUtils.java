@@ -32,7 +32,7 @@ public class CanalZKUtils {
     static Logger logger = LoggerFactory.getLogger(CanalZKUtils.class);
     
 //    public static void main(String[] args) {
-//    	String zkAddress="10.114.24.99:2181";
+//    	String zkAddress="IP:2181";
 //    	List<ZKDestinationBean> zKDestinationBeanList=getZKDestinationBeanListFromZKAddress(zkAddress);
 //    	
 //    	for(ZKDestinationBean zKDestinationBean:zKDestinationBeanList) {
@@ -48,7 +48,7 @@ public class CanalZKUtils {
 	/*
      *根据传入的zk地址，查询该zk对应的整个canal server的集群列表。
 	 * [zk: localhost:2181(CONNECTED) 2] ls /otter/canal/cluster
-	 *	[10.114.24.232:11111]
+	 *	[IP:11111]
 	 * */
     public static List<String> getZKCanalServerListFromZKAddress(String zkAddress) {
     	List<String> zKCanalServerList=new ArrayList<String>();

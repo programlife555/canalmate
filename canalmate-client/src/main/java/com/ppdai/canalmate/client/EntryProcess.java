@@ -50,6 +50,8 @@ public class EntryProcess {
                     RowProcess rowProcess = new RowProcess(rowData.getAfterColumnsList());
                     dataInfo = rowProcess.process();
                 }
+                
+                //发送给kafka时，按主键分区
                 ArrayList<Schema> schemas = dataInfo.getSchemas();
                 StringBuilder stringBuilder=new StringBuilder();
                 for(Schema schema:schemas){
@@ -66,9 +68,6 @@ public class EntryProcess {
                 Gson gson = new Gson();
                 String jsonStr = gson.toJson(entryInfo);
                 sender.send(dbName+"_"+tableName,stringBuilder.toString(),jsonStr);
-
-
-
 
             }
         }

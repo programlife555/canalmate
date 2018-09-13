@@ -22,7 +22,6 @@ import com.ppdai.canalmate.common.utils.PropertiesUtils;
 public class AuthMail
 {
 	
-	
     private static String smtp=null;
     private static String port=null;
     private static String emaiFrom=null;

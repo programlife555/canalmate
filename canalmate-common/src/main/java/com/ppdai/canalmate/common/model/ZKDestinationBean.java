@@ -12,24 +12,24 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
  * ZKDestinationBean
  * 		destinationName  destination名称，对应canal/conf下面的目录
  * 		destinationPath  该destination在zk中的path
- * 		zKDestinationClusterNodePath   该destination对应的canal server 集群，对应zk的路径 ：  ls /otter/canal/destinations/ppdai_user/cluster ，输出：[10.114.24.232:11111, 10.114.24.226:11111]
- * 		ZKDestinationRunningNode  zk命令：get /otter/canal/destinations/ppdai_user/running ，输出：{"active":true,"address":"10.114.24.232:11111","cid":2}
+ * 		zKDestinationClusterNodePath   该destination对应的canal server 集群，对应zk的路径 ：  ls /otter/canal/destinations/ppdai_user/cluster ，输出：[IP:11111, IP:11111]
+ * 		ZKDestinationRunningNode  zk命令：get /otter/canal/destinations/ppdai_user/running ，输出：{"active":true,"address":"IP:11111","cid":2}
  * 			cid
  * 			address
  * 			active
- * 		List<ZKDestinationClusterNode>    zk命令 ：ls /otter/canal/destinations/ppdai_user/cluster ，输出：[10.114.24.232:11111, 10.114.24.226:11111]
+ * 		List<ZKDestinationClusterNode>    zk命令 ：ls /otter/canal/destinations/ppdai_user/cluster ，输出：[IP:11111, IP:11111]
  * 			ZKDestinationClusterNode 
- * 				addressPort   对应 ： 10.114.24.232:11111
+ * 				addressPort   对应 ： IP:11111
  * 				active        程序计算，zk没有该状态，表示该canal server 是否是active
  * 			.....        第二个 canal server
  * 		zKDestinationClientRunningNodePath   对应zk路径 /otter/canal/destinations/ppdai_user/running
- * 		ZKDestinationClientRunningNode   消费该destination的client的信息，zk命令：get /otter/canal/destinations/ppdai_user/running ，输出：{"active":true,"address":"10.114.24.232:11111","cid":2}
+ * 		ZKDestinationClientRunningNode   消费该destination的client的信息，zk命令：get /otter/canal/destinations/ppdai_user/running ，输出：{"active":true,"address":"IP:11111","cid":2}
  * 			clientId
  * 			address
  * 			active
  *      clientCursorLogPositionPath    对应zk:/otter/canal/destinations/ppdai_user/1001/cursor
  *      clientCursorLogPosition        get /otter/canal/destinations/ppdai_user/1001/cursor 
- *									   {"@type":"com.alibaba.otter.canal.protocol.position.LogPosition","identity":{"slaveId":-1,"sourceAddress":{"address":"10.114.8.30","port":3403}},"postion":{"included":false,"journalName":"mysql-bin.000008","position":43508043,"serverId":8303403,"timestamp":1528098351000}}
+ *									   {"@type":"com.alibaba.otter.canal.protocol.position.LogPosition","identity":{"slaveId":-1,"sourceAddress":{"address":"IP","port":3403}},"postion":{"included":false,"journalName":"mysql-bin.000008","position":43508043,"serverId":123456,"timestamp":1528098351000}}
  * 
  * */
 public class ZKDestinationBean {
