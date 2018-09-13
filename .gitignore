@@ -33,11 +33,26 @@ Thumbs.db
 
 *.class
 
-
-target/
-logs/
-src/main/webapp/WEB-INF/classes/
+# this ingore
 canalmate-api/src/main/resources/generatorConfig_chh.xml
 canalmate-api/target
 canalmate-client/target
 canalmate-common/target
+canalmate-api/.settings/
+canalmate-api/.apt_generated/
+canalmate-api/.classpath
+canalmate-api/.factorypath
+canalmate-api/.project
+canalmate-client/.settings/
+canalmate-client/.apt_generated/
+canalmate-client/.classpath
+canalmate-client/.factorypath
+canalmate-client/.project
+canalmate-common/.settings/
+canalmate-common/.apt_generated/
+canalmate-common/.classpath
+canalmate-common/.factorypath
+canalmate-common/.projectrm
+canalmate-api/bin
+canalmate-client/bin
+canalmate-common/bin
