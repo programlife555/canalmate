@@ -25,6 +25,7 @@ logs/
 *.diff
 *.patch
 *.tmp
+*.txt
 
 # system ignore
 .DS_Store
