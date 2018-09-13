@@ -1,14 +1,46 @@
-.mymetadata
-.checkstyle
-.idea
-.class
-.war
-.zip
-.rar
-.idea
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
 *.iml
+*.iws
+
+# temp ignore
+logs/
+*.docpom.xml
 *.log
+*.cache
+*.diff
+*.patch
+*.tmp
 *.txt
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+*.class
+
+# other ignore
+target/
+logs/
+src/main/webapp/WEB-INF/classes/
+canalmate-api/src/main/resources/generatorConfig_chh.xml
+canalmate-api/target
+canalmate-client/target
+canalmate-common/target
 /WebContent/WEB-INF/classes/*
 target/
 logs/
