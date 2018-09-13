@@ -28,12 +28,12 @@ public class SSHUtil {
 	 public static void main(String[] args) throws Exception {
 		 SSHClient ssh = new SSHClient();
 	        ssh.loadKnownHosts();
-	        ssh.connect("10.114.24.226",23245);
+	        ssh.connect("IP",22);
 	        try {
 	            //ssh.authPublickey(System.getProperty("user.name"));
 	        	ssh.authPublickey("hadoop");
 	        	//ssh.addHostKeyVerifier(new PromiscuousVerifier());
-	        	ssh.loadKnownHosts(new File("C:\\Users\\changhonghao\\.ssh\\known_hosts"));
+	        	ssh.loadKnownHosts(new File("C:\\Users\\XXX\\.ssh\\known_hosts"));
 	        	///home/x/.ssh/known_hosts
 	            // Present here to demo algorithm renegotiation - could have just put this before connect()
 	            // Make sure JZlib is in classpath for this to work

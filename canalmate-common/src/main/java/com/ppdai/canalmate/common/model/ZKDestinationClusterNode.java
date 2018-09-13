@@ -3,7 +3,7 @@ package com.ppdai.canalmate.common.model;
 import java.util.Date;
 
 public class ZKDestinationClusterNode {
-    private String addressPort;//例如： 10.114.24.232:11111，从zk获取
+    private String addressPort;//例如： IP:11111，从zk获取
     private Boolean active;//需要手动计算，set进去
     
 	public String getAddressPort() {

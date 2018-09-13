@@ -31,7 +31,7 @@ public class ZKClient implements Watcher{
     //定义session失效时间
     private  int my_session_timeout = CanalConstants.zk_session_timeout;
     //zookeeper服务器地址
-//    private  String zookeeper_address = "10.114.24.99:2181";
+//    private  String zookeeper_address = "IP:2181";
     private  String my_zookeeper_address;
     
     //ZooKeeper变量
@@ -58,7 +58,7 @@ public class ZKClient implements Watcher{
 	public static void main(String[] args) throws InterruptedException {
 //        String parentPath= "/otter/canal/destinations/testdb01/1001/cursor"; //父节点
 //        String childrenPath = "/test/children"; //子节点
-//        String zookeeper_address="10.114.24.99:2181";
+//        String zookeeper_address="IP:2181";
 //        ZKClient test = new ZKClient(zookeeper_address);
 //        //创建链接
 //        test.createConnection();
