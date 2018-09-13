@@ -10,7 +10,6 @@ target/
 .settings/
 .project
 .classpath
-.factorypath
 
 # idea ignore
 .idea/
@@ -20,14 +19,12 @@ target/
 
 # temp ignore
 logs/
-.apt_generated/
 *.docpom.xml
 *.log
 *.cache
 *.diff
 *.patch
 *.tmp
-*.txt
 
 # system ignore
 .DS_Store
@@ -35,7 +32,7 @@ Thumbs.db
 
 *.class
 
-# this ignore
+
 target/
 logs/
 src/main/webapp/WEB-INF/classes/
@@ -43,16 +40,3 @@ canalmate-api/src/main/resources/generatorConfig_chh.xml
 canalmate-api/target
 canalmate-client/target
 canalmate-common/target
-/WebContent/WEB-INF/classes/*
-src/main/webapp/WEB-INF/classes/
-canalmate-api/src/main/resources/generatorConfig_chh.xml
-canalmate-api/src/main/resources/generatorConfig.xml
-canalmate-api/target
-canalmate-api/.classpath
-canalmate-api/.factorypath
-canalmate-client/target
-canalmate-client/.classpath
-canalmate-client/.factorypath
-canalmate-common/target
-canalmate-common/.classpath
-canalmate-common/.factorypath
